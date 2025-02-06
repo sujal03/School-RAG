@@ -29,19 +29,6 @@ def init_components():
     llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=GOOGLE_API_KEY, streaming=True, temperature=0.5)
     return vectordb, llm
 
-# Custom Styling
-st.markdown("""
-    <style>
-    body { background-color: #0E1117; color: white; }
-    .stApp { background-color: #0E1117; color: #FFFFFF; }
-    .stTextInput > div > div > input {
-        background-color: #1E1E1E !important; color: white !important;
-    }
-    .stChatMessage { background-color: #1E1E1E !important; color: white !important; }
-    .stSpinner { color: white !important; }
-    </style>
-    """, unsafe_allow_html=True)
-
 # Initialize session state
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -75,16 +62,18 @@ User Question:
 """
 
 FALLBACK_PROMPT = """
-You are an AI assistant helping users with their queries.
-Since there is no relevant document-based context, provide a **general answer** based on your knowledge.
+You are an AI assistant specializing in **school, science, and educational topics**.
+Since there is no relevant document-based context, answer the question using your **academic and scientific knowledge**.
 
 User Question:
 {question}
 
 ### Answer Guidelines:
 - Keep the response **brief** and **to the point**.
-- Provide factual, general knowledge.
-- Avoid unnecessary elaboration.
+- Stay within **school-related, science, and educational topics**.
+- If the question is **not related to school, science, or education**, politely state that you can only provide answers within these areas.
+- Avoid assumptions, opinions, or unrelated information.
+
 """
 
 prompt = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
